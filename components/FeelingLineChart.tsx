@@ -58,8 +58,8 @@ const FeelingLineChart = () => {
       {
         label: "기분",
         data: feelings,
-        borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "#F88388", // mood-coral
+        backgroundColor: "rgba(248, 131, 136, 0.2)", // mood-coral with opacity
         tension: 0.1,
       },
     ],

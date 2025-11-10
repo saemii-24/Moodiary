@@ -10,6 +10,22 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* 포인트 색 */
+  --color-mood-pink: #f3b3cd;
+  --color-mood-peach: #f1c4a5;
+  --color-mood-cream: #f7ddce;
+  --color-mood-red: #e34a35;
+  --color-mood-coral: #f88388;
+  --color-mood-light: #fef4f0;
+
+  /* 글씨 색 */
+  --color-text-primary: #2d2d2d;
+  --color-text-secondary: #5a5a5a;
+  --color-text-muted: #8b8b8b;
+  --color-text-light: #b5b5b5;
+  --color-text-warm: #6b4f4f;
+  --color-text-soft: #7a6969;
 }
 
 @media (prefers-color-scheme: dark) {

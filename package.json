@@ -9,6 +9,11 @@
     "commit": "cz",
     "lint": "eslint"
   },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    }
+  },
   "dependencies": {
     "chart.js": "^4.5.1",
     "date-fns": "^4.1.0",
