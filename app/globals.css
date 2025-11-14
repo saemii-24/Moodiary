@@ -134,7 +134,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-text-primary font-sans;
     font-family: "Pretendard Variable", ui-sans-serif, system-ui, sans-serif;
   }
 }
