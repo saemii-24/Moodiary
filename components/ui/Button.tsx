@@ -22,6 +22,9 @@ const buttonVariants = cva(
         moodRed: "bg-mood-red text-white hover:brightness-95",
         moodCoral: "bg-mood-coral text-white hover:brightness-95",
         moodLight: "bg-mood-light text-black hover:brightness-95",
+        kakao: "bg-[#FEE500] text-[#181600] hover:brightness-95",
+        apple: "bg-black text-white hover:bg-black/80",
+        email: "bg-white border border-gray-300 text-gray-900 hover:bg-gray-50",
       },
       size: {
         sm: "h-8 px-3 py-1 text-xs",
