@@ -1,5 +1,5 @@
-import Container from "@/components/Container";
-import FeelingCalendar from "@/components/FeelingCalendar";
+import Container from "@/components/common/Container";
+import FeelingCalendar from "@/components/common/FeelingCalendar";
 import { ArrowRight, ChevronRightIcon } from "lucide-react";
 
 export default function Home() {

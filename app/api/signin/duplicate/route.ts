@@ -14,11 +14,16 @@ function missing(resMsg = "userId required") {
 
 export async function GET(req: NextRequest) {
   await connectDB();
+  console.log("=================");
+  console.log("연결됨");
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
+  console.log("userId:", userId);
   if (!userId) return missing();
   // userId가 변수 userId값과 같은 문서 1개를 찾는다.
   const found = await User.findOne({ userId }).lean();
+  console.log("found:", !!found);
+  console.log("=================");
   return NextResponse.json({ exists: !!found });
 }
 

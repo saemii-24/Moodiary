@@ -1,22 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 
-export function useCheckDuplicate() {
-  const { data } = useQuery({
-    queryKey: ["check-duplicate"],
+export function useCheckDuplicate({ userId }: { userId: string }) {
+  const query = useQuery({
+    queryKey: ["check-duplicate", userId],
     queryFn: async () => {
-      const res = await fetch("/api/signin/duplicate", {
-        method: "GET",
-      });
+      const res = await fetch(`/api/signin/duplicate?userId=${userId}`);
       if (!res.ok) {
         throw new Error("Failed to check duplicate");
       }
       return res.json();
     },
+    enabled: false, // 버튼 눌렀을 때만 실행
   });
+
   return {
-    isDuplicate: data?.exists as boolean | undefined,
-    isLoading: data.isLoading,
-    isErorr: data.isError,
-    refetch: data.refetch,
+    isDuplicate: query.data?.exists,
+    isLoading: query.isFetching,
+    isError: query.isError,
+    refetch: query.refetch,
   };
 }
