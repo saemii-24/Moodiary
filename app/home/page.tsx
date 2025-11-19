@@ -1,12 +1,13 @@
 import Container from "@/components/common/Container";
 import FeelingCalendar from "@/components/common/FeelingCalendar";
-import { ArrowRight, ChevronRightIcon } from "lucide-react";
+import { Subtitle } from "@/components/common/Title";
+import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
-    <Container>
-      <div>철수 님과 함께하는 오늘의 기록</div>
-      <h1>오늘 기록을 시작해볼까요?</h1>
+    <Container className="bg-mood-light">
+      <Subtitle>철수 님과 함께하는 오늘의 기록</Subtitle>
+      <h3>오늘 기록을 시작해볼까요?</h3>
       <ArrowRight />
 
       <div>

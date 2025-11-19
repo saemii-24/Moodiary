@@ -9,7 +9,7 @@ const ErrorMessage = ({
   className?: string;
 }) => {
   return (
-    <p className={cn("text-mood-red text-sm mt-1", className)}>{children}</p>
+    <p className={cn("text-mood-red text-sm mt-0.5", className)}>{children}</p>
   );
 };
 

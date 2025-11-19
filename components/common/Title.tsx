@@ -1,26 +1,47 @@
 import { cn } from "@/lib/utils";
-import React from "react";
 
-type TitleBaseProps = {
-  className?: string;
-  children: React.ReactNode;
-};
-const base = "font-semibold tracking-tight";
-const Title = ({
-  level = 1,
+const Subtitle = ({
   children,
   className,
-}: TitleBaseProps & { level?: 1 | 2 | 3 | 4 | 5 | 6 }) => {
-  const Tag = `h${level}` as const;
-  const sizeMap = {
-    1: "text-3xl md:text-4xl",
-    2: "text-2xl md:text-3xl",
-    3: "text-xl md:text-2xl",
-    4: "text-lg md:text-xl",
-    5: "text-base md:text-lg",
-    6: "text-sm md:text-base",
-  } as const;
-  return <Tag className={cn(base, sizeMap[level], className)}>{children}</Tag>;
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div className={cn("text-lg font-semibold", className)}>{children}</div>
+  );
 };
 
-export default Title;
+const MainTitle = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <h2 className={cn("text-3xl font-semibold -mt-1 text-mood-red", className)}>
+      {children}
+    </h2>
+  );
+};
+
+const TitleTag = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div
+      className={cn(
+        "text-xs text-mood-red border-mood-red p-1 px-2 rounded-full mb-3 border w-fit",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+};
+export { Subtitle, TitleTag, MainTitle };

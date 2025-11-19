@@ -1,8 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import {
+  startOfMonth,
+  endOfMonth,
+  addDays,
+  format,
+  isSameMonth,
+  getDay,
+} from "date-fns";
+import { ko } from "date-fns/locale";
+import { TitleTag } from "./Title";
 
 const moodData: Record<string, string> = {
   "2025-11-01": "😀",
@@ -12,34 +20,106 @@ const moodData: Record<string, string> = {
   "2025-11-05": "😊",
 };
 
-const FeelingCalendar = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+const formatKey = (date: Date) => date.toLocaleDateString("en-CA");
 
-  // 날짜별 이모지 반환
-  const renderDayContents = (day: number, date?: Date) => {
-    if (!date) return day;
-    const key = date.toISOString().split("T")[0];
-    const mood = moodData[key];
-    return (
-      <div className="flex flex-col items-center justify-center">
-        <span className="text-xs">{day}</span>
-        {mood && <span className="text-lg">{mood}</span>}
-      </div>
-    );
+const FeelingCalendar = () => {
+  const today = new Date();
+  const [selectedDate, setSelectedDate] = useState<Date | null>(today);
+
+  // 주(월~토) 단위로 달력을 구성하는 헬퍼
+  const buildWeeks = () => {
+    const monthStart = startOfMonth(today);
+    const monthEnd = endOfMonth(today);
+
+    // 첫 주의 월요일 찾기
+    let firstMonday = monthStart;
+    while (getDay(firstMonday) !== 1) {
+      firstMonday = addDays(firstMonday, -1);
+    }
+    // 마지막 주의 토요일 찾기
+    let lastSaturday = monthEnd;
+    while (getDay(lastSaturday) !== 6) {
+      lastSaturday = addDays(lastSaturday, 1);
+    }
+
+    const weeks: Date[][] = [];
+    let cursor = firstMonday;
+    let currentWeek: Date[] = [];
+
+    while (cursor <= lastSaturday) {
+      // 일요일은 건너뜀
+      if (getDay(cursor) === 0) {
+        cursor = addDays(cursor, 1);
+        continue;
+      }
+      if (getDay(cursor) === 1 && currentWeek.length) {
+        weeks.push(currentWeek);
+        currentWeek = [];
+      }
+      currentWeek.push(cursor);
+      if (getDay(cursor) === 6) {
+        weeks.push(currentWeek);
+        currentWeek = [];
+      }
+      cursor = addDays(cursor, 1);
+    }
+    if (currentWeek.length) weeks.push(currentWeek);
+    return weeks;
   };
 
+  const weeks = buildWeeks();
+
+  const handleSelect = (date: Date) => setSelectedDate(date);
+
   return (
-    <div className="p-4 w-full max-w-md mx-auto">
-      <h2 className="text-center text-lg font-semibold mb-2">
-        이번 달의 감정 캘린더
-      </h2>
-      <DatePicker
-        selected={selectedDate}
-        onChange={(date) => setSelectedDate(date)}
-        inline
-        renderDayContents={renderDayContents}
-        calendarClassName="w-full"
-      />
+    <div className="w-full h-screen flex flex-col">
+      <TitleTag>이번 달의 감정 캘린더</TitleTag>
+      <div className="text-center font-semibold py-4 text-xl">
+        {format(today, "yyyy년 MM월", { locale: ko })}
+      </div>
+      <div className="flex-1 flex flex-col px-2 pb-4">
+        {/* 요일 헤더 */}
+        <div className="grid grid-cols-6 text-center text-sm font-medium mb-2">
+          {["월", "화", "수", "목", "금", "토"].map((d) => (
+            <div key={d}>{d}</div>
+          ))}
+        </div>
+        {/* 날짜 */}
+        <div className="flex-1 flex flex-col gap-2 overflow-y-auto">
+          {weeks.map((week, wi) => (
+            <div key={wi} className="grid grid-cols-6 gap-1">
+              {week.map((date, di) => {
+                const key = formatKey(date);
+                const mood = moodData[key];
+                const inMonth = isSameMonth(date, today);
+                const selected =
+                  selectedDate && formatKey(selectedDate) === key;
+                return (
+                  <button
+                    key={di}
+                    onClick={() => handleSelect(date)}
+                    className={`flex flex-col items-center justify-center py-2 rounded-md border text-xs gap-1 transition
+                      ${
+                        selected
+                          ? "bg-mood-light border-mood-cream"
+                          : "bg-white"
+                      }
+                      ${inMonth ? "text-gray-900" : "text-gray-400"}
+                    `}
+                  >
+                    <span>{format(date, "d")}</span>
+                    {mood ? (
+                      <span className="text-lg leading-none">{mood}</span>
+                    ) : (
+                      <span className="inline-block w-6 h-6 rounded-full bg-gray-200" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
