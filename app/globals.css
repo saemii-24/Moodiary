@@ -12,13 +12,13 @@
   --font-mono: var(--font-geist-mono);
 
   /* 포인트 색 */
-  --color-mood-pink: ##f9e4e4;
+  --color-mood-pink: #f9e4e4;
   --color-mood-peach: #f1c4a5;
   --color-mood-cream: #f7ddce;
   --color-mood-red: #e34a35;
   --color-mood-coral: #f88388;
   --color-mood-light: #fef4f0;
-  --clor-mood-gray: #f2f2f2;
+  --color-mood-gray: #f2f2f2;
 
   /* 글씨 색 */
   --color-text-primary: #2d2d2d;

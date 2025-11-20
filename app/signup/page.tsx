@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { useCheckDuplicate } from "./_query/useCheckDuplicate";
 import ErrorMessage from "@/components/common/ErrorMessage";
+import { cn } from "@/lib/utils";
+import { useSignup } from "./_query/useSignup";
 
 type Signin = {
   userId: string;
@@ -19,13 +21,16 @@ export default function SigninPage() {
     formState: { errors },
   } = useForm<Signin>();
 
+  const { createUser, isPending, isError, error, isSuccess, data } =
+    useSignup();
+
   const onSubmit: SubmitHandler<Signin> = (data) => {
-    // 비밀번호 일치 검증 (추가 안전장치)
-    if (data.password !== data.confirmPassword) {
-      alert("비밀번호가 서로 일치하지 않습니다.");
-      return;
-    }
-    console.log("submit:", data);
+    if (data.password !== data.confirmPassword) return; // 이미 disabled 처리됨
+    createUser({
+      userId: data.userId,
+      nickname: data.userId,
+      password: data.password,
+    });
   };
 
   // hook
@@ -58,7 +63,11 @@ export default function SigninPage() {
   const isPasswordMismatch =
     !!confirmPassword && !!password && password !== confirmPassword;
   const canSubmit =
-    !!password && !!confirmPassword && !isPasswordMismatch && !isDuplicate;
+    !!password &&
+    !!confirmPassword &&
+    !isPasswordMismatch &&
+    isDuplicate === false &&
+    !isPending;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center py-10 px-4">
@@ -74,21 +83,33 @@ export default function SigninPage() {
       >
         <div className="mt-6 space-y-4">
           {/* 아이디 + 중복확인 */}
-          <div className="flex items-center gap-2">
-            <Input
-              placeholder="아이디"
-              uiSize="md"
-              autoComplete="username"
-              {...register("userId")}
-            />
-
-            <Button
-              type="button"
-              onClick={duplicateCheck}
-              disabled={isDuplicateLoading}
-            >
-              {isDuplicateLoading ? "확인 중..." : "중복확인"}
-            </Button>
+          <div>
+            <div className="flex items-center gap-2">
+              <Input
+                placeholder="아이디"
+                uiSize="md"
+                autoComplete="username"
+                {...register("userId")}
+              />
+              <Button
+                type="button"
+                onClick={duplicateCheck}
+                disabled={isDuplicateLoading}
+              >
+                {isDuplicateLoading ? "확인 중..." : "중복확인"}
+              </Button>
+            </div>
+            {isDuplicate !== undefined && (
+              <p
+                className={cn("text-xs mt-1 text-gray-500", {
+                  "text-mood-red": isDuplicate,
+                })}
+              >
+                {isDuplicate
+                  ? "이미 사용 중인 아이디입니다."
+                  : "사용 가능한 아이디입니다."}
+              </p>
+            )}
           </div>
 
           {/* 비밀번호 */}
@@ -101,21 +122,23 @@ export default function SigninPage() {
             error={errors.password?.message}
           />
           {/* 비밀번호 확인 */}
-          <Input
-            type="password"
-            placeholder="비밀번호 확인"
-            uiSize="md"
-            autoComplete="new-password"
-            {...register("confirmPassword", {
-              required: "비밀번호 확인을 입력해주세요.",
-            })}
-            error={errors.confirmPassword?.message}
-          />
-          {isPasswordMismatch && (
-            <ErrorMessage className="text-xs">
-              입력한 두 비밀번호가 서로 다릅니다.
-            </ErrorMessage>
-          )}
+          <div>
+            <Input
+              type="password"
+              placeholder="비밀번호 확인"
+              uiSize="md"
+              autoComplete="new-password"
+              {...register("confirmPassword", {
+                required: "비밀번호 확인을 입력해주세요.",
+              })}
+              error={errors.confirmPassword?.message}
+            />
+            {isPasswordMismatch && (
+              <ErrorMessage className="text-xs mt-1">
+                비밀번호가 일치하지 않습니다.
+              </ErrorMessage>
+            )}
+          </div>
         </div>
         {/* 제출 */}
         <Button
@@ -125,20 +148,27 @@ export default function SigninPage() {
           className="w-full mt-4 font-medium"
           disabled={!canSubmit}
         >
-          가입 후 기록 시작하기
+          {isPending
+            ? "가입 중..."
+            : isSuccess
+            ? "가입 완료!"
+            : "가입 후 기록 시작하기"}
         </Button>
-        {isDuplicate !== undefined && (
-          <p className="text-xs mt-2 text-gray-500">
-            {isDuplicate
-              ? "이미 사용 중인 아이디입니다."
-              : "사용 가능한 아이디입니다."}
+
+        {isError && error && (
+          <ErrorMessage className="text-xs mt-2">{error.message}</ErrorMessage>
+        )}
+        {isSuccess && data && (
+          <p className="text-xs mt-2 text-green-600">
+            환영합니다, <span className="font-medium">{data.nickname}</span> 님!
           </p>
         )}
-        {!canSubmit && (
+
+        {/* {!canSubmit && (
           <p className="text-[11px] mt-2 text-gray-400">
             아이디 중복 여부와 두 비밀번호가 일치해야 가입할 수 있습니다.
           </p>
-        )}
+        )} */}
       </form>
     </div>
   );

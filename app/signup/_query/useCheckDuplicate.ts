@@ -4,7 +4,7 @@ export function useCheckDuplicate({ userId }: { userId: string }) {
   const query = useQuery({
     queryKey: ["check-duplicate", userId],
     queryFn: async () => {
-      const res = await fetch(`/api/signin/duplicate?userId=${userId}`);
+      const res = await fetch(`/api/signup/duplicate?userId=${userId}`);
       if (!res.ok) {
         throw new Error("Failed to check duplicate");
       }
