@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils"; // 추가
+import { useCheckDuplicate } from "@/app/signin/_query/useCheckDuplicate";
 
 type FormValues = {
   emoji: string;
