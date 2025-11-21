@@ -3,26 +3,25 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import ErrorMessage from "@/components/common/ErrorMessage";
+import { useSignin } from "./_query/useSignin";
 
 type Signin = {
   userId: string;
   password: string;
-  confirmPassword: string;
 };
 
 export default function SigninPage() {
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Signin>();
+    formState: { errors, isValid },
+  } = useForm<Signin>({ mode: "onChange" });
+
+  const { signin, isPending, isSuccess, isError, error, data } = useSignin();
 
   const onSubmit: SubmitHandler<Signin> = (data) => {
-    if (data.password !== data.confirmPassword) return; // 이미 disabled 처리됨
-    createUser({
+    signin({
       userId: data.userId,
-      nickname: data.userId,
       password: data.password,
     });
   };
@@ -54,11 +53,10 @@ export default function SigninPage() {
             type="password"
             placeholder="비밀번호"
             uiSize="md"
-            autoComplete="new-password"
+            autoComplete="current-password"
             {...register("password", { required: "비밀번호를 입력해주세요." })}
             error={errors.password?.message}
           />
-          {/* 비밀번호 확인 */}
         </div>
         {/* 제출 */}
         <Button
@@ -66,7 +64,7 @@ export default function SigninPage() {
           variant="moodRed"
           size="lg"
           className="w-full mt-4 font-medium"
-          disabled={!canSubmit}
+          disabled={!isValid || isPending}
         >
           {isPending
             ? "로그인 중..."
