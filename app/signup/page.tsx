@@ -13,7 +13,7 @@ type Signin = {
   confirmPassword: string;
 };
 
-export default function SigninPage() {
+export default function SignupPage() {
   const {
     register,
     handleSubmit,
