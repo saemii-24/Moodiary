@@ -6,6 +6,8 @@ import { useCheckDuplicate } from "./_query/useCheckDuplicate";
 import ErrorMessage from "@/components/common/ErrorMessage";
 import { cn } from "@/lib/utils";
 import { useSignup } from "./_query/useSignup";
+import { Route } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type Signin = {
   userId: string;
@@ -14,6 +16,7 @@ type Signin = {
 };
 
 export default function SignupPage() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -21,15 +24,17 @@ export default function SignupPage() {
     formState: { errors },
   } = useForm<Signin>();
 
-  const { createUser, isPending, isError, error, isSuccess, data } =
+  const { createUserAsync, isPending, isError, error, isSuccess, data } =
     useSignup();
 
   const onSubmit: SubmitHandler<Signin> = (data) => {
-    if (data.password !== data.confirmPassword) return; // 이미 disabled 처리됨
-    createUser({
+    if (data.password !== data.confirmPassword) return;
+    createUserAsync({
       userId: data.userId,
       nickname: data.userId,
       password: data.password,
+    }).then(() => {
+      router.push("/home");
     });
   };
 

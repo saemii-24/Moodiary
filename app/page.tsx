@@ -39,11 +39,11 @@ export default function Home() {
             <span className="text-[11px] text-gray-400">또는</span>
             <div className="h-px bg-gray-200 flex-1" />
           </div>
-          <div className="text-center">
+          <Link href="/signup" className="text-center block">
             <button className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
               안전하게 회원가입
             </button>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

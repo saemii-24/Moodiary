@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 // User 스키마 개요:
 //  - userId: 로그인에 사용할 고유 식별자 (예: 아이디)

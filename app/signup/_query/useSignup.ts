@@ -21,10 +21,10 @@ interface ApiError {
   error: string;
 }
 
-export function useSignin() {
+export function useSignup() {
   const mutation = useMutation<UserResponse, Error, SigninPayload>({
     mutationFn: async (payload: SigninPayload) => {
-      const res = await fetch("/api/signin", {
+      const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
