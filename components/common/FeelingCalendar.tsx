@@ -72,9 +72,9 @@ const FeelingCalendar = () => {
   const handleSelect = (date: Date) => setSelectedDate(date);
 
   return (
-    <div className="w-full h-screen flex flex-col">
-      <TitleTag>이번 달의 감정 캘린더</TitleTag>
-      <div className="text-center font-semibold py-4 text-xl">
+    <div className="w-full flex flex-col">
+      <TitleTag className="">감정 캘린더</TitleTag>
+      <div className="mt-[-8px] font-semibold pb-6 text-xl">
         {format(today, "yyyy년 MM월", { locale: ko })}
       </div>
       <div className="flex-1 flex flex-col px-2 pb-4">

@@ -5,6 +5,12 @@ const queryClient = new QueryClient();
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <div
+        className="mx-auto max-w-[480px] w-full min-h-screen bg-white px-4"
+      >
+        {children}
+      </div>
+    </QueryClientProvider>
   );
 }
