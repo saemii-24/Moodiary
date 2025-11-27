@@ -1,37 +1,48 @@
 import { useMutation } from "@tanstack/react-query";
 
-export interface SignupPayload {
+export interface CreatePostPayload {
   userId: string;
-  nickname: string;
-  password: string;
+  date: string | Date;
+  feeling: string;
+  title: string;
+  content: string;
 }
 
-export interface UserResponse {
+export interface PopulatedUser {
   _id: string;
   userId: string;
   nickname: string;
+}
+
+export interface CreatedPost {
+  _id: string;
+  user: PopulatedUser;
+  date: string;
+  feeling: string;
+  title: string;
+  content: string;
   createdAt: string;
   updatedAt: string;
 }
 
 interface ApiSuccess {
-  data: UserResponse;
+  data: CreatedPost;
 }
 interface ApiError {
   error: string;
 }
 
-export function useSignup() {
-  const mutation = useMutation<UserResponse, Error, SignupPayload>({
-    mutationFn: async (payload: SignupPayload) => {
-      const res = await fetch("/api/signup", {
+export function useCreatePost() {
+  const mutation = useMutation<CreatedPost, Error, CreatePostPayload>({
+    mutationFn: async (payload: CreatePostPayload) => {
+      const res = await fetch("/api/post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       const json: ApiSuccess | ApiError = await res.json();
       if (!res.ok) {
-        const message = (json as ApiError).error || "가입 요청 실패";
+        const message = (json as ApiError).error || "게시글 등록 실패";
         throw new Error(message);
       }
       return (json as ApiSuccess).data;
@@ -39,8 +50,8 @@ export function useSignup() {
   });
 
   return {
-    createUser: mutation.mutate,
-    createUserAsync: mutation.mutateAsync,
+    createPost: mutation.mutate,
+    createPostAsync: mutation.mutateAsync,
     isPending: mutation.isPending,
     isSuccess: mutation.isSuccess,
     isError: mutation.isError,

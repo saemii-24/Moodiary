@@ -1,13 +1,13 @@
 "use client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
+
 import { useCheckDuplicate } from "./_query/useCheckDuplicate";
 import ErrorMessage from "@/components/common/ErrorMessage";
 import { cn } from "@/lib/utils";
 import { useSignup } from "./_query/useSignup";
-import { Route } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Input from "@/components/ui/input";
 
 type Signin = {
   userId: string;
