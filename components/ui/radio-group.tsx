@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-// simple filled indicator is implemented with a span (no SVG stroke)
+import { CircleIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -40,9 +40,9 @@ function RadioGroupItem({
           className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-white "
           strokeWidth={0}
         />
-      <RadioGroupPrimitive.Indicator
-        data-slot="radio-group-indicator"
-        className="relative flex items-center justify-center"
-      >
-        <span className="absolute top-1/2 left-1/2 w-2 h-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" aria-hidden />
       </RadioGroupPrimitive.Indicator>
+    </RadioGroupPrimitive.Item>
+  );
+}
+
+export { RadioGroup, RadioGroupItem };

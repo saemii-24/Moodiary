@@ -11,6 +11,12 @@ const PostSchema = new Schema(
       type: Date,
       required: true,
     },
+    // YYYYMMDD numeric day key (e.g. 20251128) for easy exact-match queries
+    dateKey: {
+      type: Number,
+      required: true,
+      index: true,
+    },
     feeling: {
       type: String,
       required: true,
