@@ -1,9 +1,11 @@
 "use client";
+
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import ErrorMessage from "@/components/common/ErrorMessage";
 import { useSignin } from "./_query/useSignin";
+import { useEffect } from "react";
 
 type Signin = {
   userId: string;
@@ -17,14 +19,17 @@ export default function SigninPage() {
     formState: { errors, isValid },
   } = useForm<Signin>({ mode: "onChange" });
 
-  const { signin, isPending, isSuccess, isError, error, data } = useSignin();
+  const { mutate: signin, isPending, isSuccess, isError, error } = useSignin();
 
   const onSubmit: SubmitHandler<Signin> = (data) => {
-    signin({
-      userId: data.userId,
-      password: data.password,
-    });
+    signin(data);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      window.location.href = "/";
+    }
+  }, [isSuccess]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center py-10 px-4">
@@ -39,7 +44,6 @@ export default function SigninPage() {
         className="w-full max-w-sm bg-white flex flex-col"
       >
         <div className="mt-6 space-y-4">
-          {/* 아이디  */}
           <Input
             placeholder="아이디"
             uiSize="md"
@@ -48,7 +52,6 @@ export default function SigninPage() {
             error={errors.userId?.message}
           />
 
-          {/* 비밀번호 */}
           <Input
             type="password"
             placeholder="비밀번호"
@@ -58,7 +61,7 @@ export default function SigninPage() {
             error={errors.password?.message}
           />
         </div>
-        {/* 제출 */}
+
         <Button
           type="submit"
           variant="moodRed"
@@ -75,11 +78,6 @@ export default function SigninPage() {
 
         {isError && error && (
           <ErrorMessage className="text-xs mt-2">{error.message}</ErrorMessage>
-        )}
-        {isSuccess && data && (
-          <p className="text-xs mt-2 text-green-600">
-            환영합니다, <span className="font-medium">{data.nickname}</span> 님!
-          </p>
         )}
       </form>
     </div>
