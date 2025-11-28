@@ -7,7 +7,7 @@ import ErrorMessage from "@/components/common/ErrorMessage";
 import { cn } from "@/lib/utils";
 import { useSignup } from "./_query/useSignup";
 import { useRouter } from "next/navigation";
-import Input from "@/components/ui/input";
+import Input from "@/components/ui/Input";
 
 type Signin = {
   userId: string;

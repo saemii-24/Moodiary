@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 const emojis = ["😀", "😊", "😢", "😡", "😴", "😆", "😍", "😥"];
@@ -32,12 +32,10 @@ const EditFeelingPage = () => {
         {emojis.map((e, i) => (
           <button
             key={i}
-           className={cn(
-                    "text-2xl p-2 border rounded-md transition",
-                    emoji === e
-                        ? "bg-yellow-200 border-yellow-400"
-                        : "bg-white"
-                    )}
+            className={cn(
+              "text-2xl p-2 border rounded-md transition",
+              emoji === e ? "bg-yellow-200 border-yellow-400" : "bg-white"
+            )}
             onClick={() => setEmoji(e)}
           >
             {e}
@@ -71,9 +69,7 @@ const EditFeelingPage = () => {
         <Button variant="outline" className="flex-1">
           취소
         </Button>
-        <Button className="flex-1 bg-mood-red text-white">
-          저장하기
-        </Button>
+        <Button className="flex-1 bg-mood-red text-white">저장하기</Button>
       </div>
     </div>
   );
