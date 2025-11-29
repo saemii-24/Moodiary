@@ -27,7 +27,7 @@ export default function SigninPage() {
 
   useEffect(() => {
     if (isSuccess) {
-      window.location.href = "/";
+      window.location.href = "/home";
     }
   }, [isSuccess]);
 
