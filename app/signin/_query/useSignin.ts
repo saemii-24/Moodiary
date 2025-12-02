@@ -1,50 +1,25 @@
 import { useMutation } from "@tanstack/react-query";
+import { signIn } from "next-auth/react";
 
-export interface SigninPayload {
+type SigninParams = {
   userId: string;
   password: string;
-}
-
-export interface UserResponse {
-  _id: string;
-  userId: string;
-  nickname: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface ApiSuccess {
-  data: UserResponse;
-}
-interface ApiError {
-  error: string;
-}
+};
 
 export function useSignin() {
-  const mutation = useMutation<UserResponse, Error, SigninPayload>({
-    mutationFn: async (payload: SigninPayload) => {
-      const res = await fetch("/api/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+  return useMutation({
+    mutationFn: async (data: SigninParams) => {
+      const res = await signIn("credentials", {
+        redirect: false,
+        userId: data.userId,
+        password: data.password,
       });
-      const json: ApiSuccess | ApiError = await res.json();
-      if (!res.ok) {
-        const message = (json as ApiError).error || "로그인 실패";
-        throw new Error(message);
+
+      if (!res || res.error) {
+        throw new Error(res?.error || "로그인 실패");
       }
-      return (json as ApiSuccess).data;
+
+      return res;
     },
   });
-
-  return {
-    signin: mutation.mutate,
-    signinAsync: mutation.mutateAsync,
-    isPending: mutation.isPending,
-    isSuccess: mutation.isSuccess,
-    isError: mutation.isError,
-    error: mutation.error,
-    data: mutation.data,
-    reset: mutation.reset,
-  };
 }

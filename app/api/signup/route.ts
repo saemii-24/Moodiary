@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongooose";
 import User from "@/models/User";
-import bcrypt from "bcrypt";
+import randomName from "@/lib/randomName";
 
 export async function POST(request: NextRequest) {
   await connectDB();
@@ -16,8 +16,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "중복 userId" }, { status: 409 });
   }
 
-  const hashed = await bcrypt.hash(password, 12);
-  const created = await User.create({ userId, nickname, password: hashed });
+  const created = await User.create({
+    userId,
+    nickname: randomName(),
+    password, // ⭐ 평문 그대로 넣기 (스키마에서 자동 해시됨)
+  });
   const { password: _p, ...safe } = created.toJSON();
   return NextResponse.json({ data: safe }, { status: 201 });
 }
