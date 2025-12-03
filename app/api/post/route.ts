@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "필수 값 누락" }, { status: 422 });
   }
 
-  // 유저 확인
   const user = await UserModel.findOne({ userId });
   if (!user) {
     return NextResponse.json(
@@ -21,14 +20,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // dateKey 검증 (YYYYMMDD)
   if (!/^\d{8}$/.test(String(dateKey))) {
     return NextResponse.json({ error: "잘못된 dateKey 형식" }, { status: 422 });
   }
 
+  const keyNum = Number(dateKey);
+  // dateKey only storage; no Date construction needed
   const newPost = await PostModel.create({
     user: user._id,
-    dateKey: Number(dateKey),
+    dateKey: keyNum,
     feeling,
     title,
     content,
@@ -64,7 +64,6 @@ export async function GET(request: NextRequest) {
   const post = await PostModel.findOne({
     user: user._id,
     dateKey: Number(dateKey),
-    //Post 의 user ObjectId를 실제 User 문서 데이터로 변환 (populate)
   }).populate("user");
 
   if (!post) {
