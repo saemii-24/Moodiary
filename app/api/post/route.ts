@@ -76,3 +76,49 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({ data: post }, { status: 200 });
 }
+
+export async function DELETE(request: NextRequest) {
+  await connectDB();
+
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get("userId");
+  const postId = searchParams.get("postId");
+
+  // 필수 값 체크
+  if (!userId || !postId) {
+    return NextResponse.json({ error: "필수 값 누락" }, { status: 422 });
+  }
+
+  // 사용자 존재 여부 확인
+  const user = await UserModel.findOne({ userId });
+  if (!user) {
+    return NextResponse.json(
+      { error: "존재하지 않는 사용자입니다" },
+      { status: 404 }
+    );
+  }
+
+  // 게시글 존재 여부 확인
+  const post = await PostModel.findById(postId);
+  if (!post) {
+    return NextResponse.json(
+      { error: "존재하지 않는 게시글입니다" },
+      { status: 404 }
+    );
+  }
+
+  // 권한 확인
+  if (post.user.toString() !== user._id.toString()) {
+    return NextResponse.json(
+      { error: "게시글 삭제 권한이 없습니다" },
+      { status: 403 }
+    );
+  }
+
+  await PostModel.findByIdAndDelete(postId);
+
+  return NextResponse.json(
+    { message: "게시글이 정상적으로 삭제되었습니다", postId },
+    { status: 200 }
+  );
+}
