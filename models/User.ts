@@ -19,18 +19,18 @@ const UserSchema = new Schema(
   {
     timestamps: true, // createdAt, updatedAt 자동 생성
     //API 응답 직전 어떤 활동을 할지 정의
-    // toJSON: {
-    //   transform: (_doc, ret) => {
-    //     delete ret.password; //응답 직전에 Password 필드 제거
-    //     return ret;
-    //   },
-    // },
-    // toObject: {
-    //   transform: (_doc, ret) => {
-    //     delete ret.password;
-    //     return ret;
-    //   },
-    // },
+    toJSON: {
+      transform: (_doc, ret) => {
+        delete ret.password; //응답 직전에 Password 필드 제거
+        return ret;
+      },
+    },
+    toObject: {
+      transform: (_doc, ret) => {
+        delete ret.password;
+        return ret;
+      },
+    },
   }
 );
 
