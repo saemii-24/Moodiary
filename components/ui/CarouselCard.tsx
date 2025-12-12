@@ -22,14 +22,14 @@ export default function CarouselCard({
   itemClassName,
 }: CarouselCardProps) {
   return (
-    <Carousel className={cn("w-full max-w-md mx-auto", className)}>
-      <CarouselContent className="py-4">
+    <Carousel className={cn("w-full max-w-md mx-auto ", className)}>
+      <CarouselContent className="py-4 h-full">
         {items.map((child, index) => (
-          <CarouselItem key={index}>
+          <CarouselItem key={index} className="basis-[80%] min-h-[10vh]">
             <div
               className={cn(
-                "bg-white rounded-2xl shadow-lg p-6 flex items-center justify-center text-center transition-all border border-neutral-200",
-                "hover:shadow-xl hover:-translate-y-1",
+                "rounded-2xl p-6 flex h-full items-center justify-center  transition-all bg-gray-50",
+
                 itemClassName
               )}
             >
@@ -38,9 +38,6 @@ export default function CarouselCard({
           </CarouselItem>
         ))}
       </CarouselContent>
-
-      <CarouselPrevious className="hidden md:flex" />
-      <CarouselNext className="hidden md:flex" />
     </Carousel>
   );
 }

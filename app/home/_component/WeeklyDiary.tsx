@@ -1,5 +1,6 @@
 "use client";
 
+import { Subtitle } from "@/components/common/Title";
 import CarouselCard from "@/components/ui/CarouselCard";
 
 export default function WeeklyDiary() {
@@ -30,12 +31,17 @@ export default function WeeklyDiary() {
   ];
 
   const items = diaryItems.map((item, index) => (
-    <div className="w-full" key={index}>
+    <div className="w-full flex flex-col" key={index}>
       <p className="text-sm ">{item.date}</p>
       <h3 className="font-semibold text-lg mt-1">{item.title}</h3>
       <p className=" mt-2 line-clamp-3">{item.content}</p>
     </div>
   ));
 
-  return <CarouselCard items={items} className="mt-6" />;
+  return (
+    <div className="w-full space-y-2">
+      <Subtitle>이번 주 기록</Subtitle>
+      <CarouselCard items={items} />
+    </div>
+  );
 }
