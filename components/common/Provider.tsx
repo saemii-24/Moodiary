@@ -8,7 +8,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <div className="mx-auto max-w-[480px] w-full min-h-screen bg-white px-4">
+        <div className="mx-auto max-w-[480px] w-full min-h-screen bg-white">
           {children}
         </div>
       </SessionProvider>

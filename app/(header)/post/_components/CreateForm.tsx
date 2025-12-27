@@ -1,6 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { useCreatePost } from "@/app/post/_query/useCreatePost";
+import { useCreatePost } from "@/app/(header)/post/_query/useCreatePost";
 
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/textarea";

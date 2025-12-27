@@ -41,7 +41,11 @@ export default function WeeklyDiary() {
   return (
     <div className="w-full space-y-2">
       <Subtitle>이번 주 기록</Subtitle>
-      <CarouselCard items={items} />
+
+      {/* ⭐ 풀블리드 처리 */}
+      <div className="-mx-4">
+        <CarouselCard items={items} />
+      </div>
     </div>
   );
 }

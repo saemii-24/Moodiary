@@ -1,56 +1,25 @@
 "use client";
+import React from "react";
+import { User } from "lucide-react";
 
-import { LayoutGrid } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-
-export default function Header() {
-  const pathname = usePathname();
-
-  const isActive = (href: string) => pathname === href;
-
+const Header = () => {
   return (
-    <header className="px-3 border-b">
-      <div className="flex h-14 items-center gap-6">
-        <NavLink href="/home" active={isActive("/home")}>
-          MAIN
-        </NavLink>
+    <header className="sticky top-0 z-50 h-14 bg-white border-b border-gray-200">
+      <div className="flex h-full items-center justify-between px-4">
+        <div className="text-lg font-semibold text-mood-red">Moodiary</div>
 
-        <NavLink href="/post" active={isActive("/post")}>
-          POST
-        </NavLink>
-
-        <Link href="/my" className="ml-auto">
-          <LayoutGrid />
-        </Link>
+        <button
+          aria-label="My Page"
+          className="flex items-center justify-center w-9 h-9 rounded-full bg-mood-red text-white hover:opacity-80 transition-opacity"
+          onClick={() => {
+            window.location.href = "/my";
+          }}
+        >
+          <User size={20} />
+        </button>
       </div>
     </header>
   );
-}
+};
 
-function NavLink({
-  href,
-  active,
-  children,
-}: {
-  href: string;
-  active: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className={cn(
-        "relative flex h-full items-center text-sm text-neutral-600 transition-colors",
-        active && "font-bold text-neutral-900"
-      )}
-    >
-      {children}
-
-      {active && (
-        <span className="absolute bottom-0 left-0 h-0.5 w-full bg-neutral-900" />
-      )}
-    </Link>
-  );
-}
+export default Header;
