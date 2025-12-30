@@ -66,7 +66,7 @@ const CreateForm = () => {
   };
 
   return (
-    <div className="py-10">
+    <div className="">
       <TitleTag>Keep a Diary!</TitleTag>
       <div>
         <Form {...form}>
