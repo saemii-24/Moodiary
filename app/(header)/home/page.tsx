@@ -22,6 +22,8 @@ export default function Home() {
       </div>
 
       <div className="mt-4 font-semibold">
+
+        <Subtitle>감정 캘린더</Subtitle>
         <FeelingCalendar />
         {/* <DailyDiary /> */}
         <WeeklyDiary />

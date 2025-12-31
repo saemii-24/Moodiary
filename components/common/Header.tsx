@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
 import { User } from "lucide-react";
+import Link from "next/link";
 
 const Header = () => {
   return (
     <header className="sticky top-0 z-50 h-14 bg-white border-b border-gray-200">
       <div className="flex h-full items-center justify-between px-4">
-        <div className="text-lg font-semibold text-mood-red">Moodiary</div>
+        <Link href="/home">
+          <div className="text-lg font-semibold text-mood-red">Moodiary</div>
+        </Link>
 
         <button
           aria-label="My Page"

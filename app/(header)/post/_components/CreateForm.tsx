@@ -18,6 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { MainTitle, TitleTag } from "@/components/common/Title";
+import { cn } from "@/lib/utils";
 
 type FormValues = {
   emoji: string;
@@ -88,26 +89,25 @@ const CreateForm = () => {
                       onValueChange={field.onChange}
                       className="flex flex-col gap-2"
                     >
-                      {EMOJI_OPTIONS.map(({ emoji, comment }) => {
-                        const id = `emoji-${emoji}`;
-                        return (
-                          <div
-                            key={emoji}
-                            className="flex items-center gap-3 rounded-md border px-4 py-2"
-                          >
-                            <RadioGroupItem value={emoji} id={id} />
-                            <Label
-                              htmlFor={id}
-                              className="flex items-center gap-2 cursor-pointer"
-                            >
-                              <span className="text-xl">{emoji}</span>
-                              <span className="text-sm text-muted-foreground">
-                                {comment}
-                              </span>
-                            </Label>
+                      {EMOJI_OPTIONS.map(({ emoji, comment }) => (
+                        <div
+                          key={emoji}
+                          onClick={() => field.onChange(emoji)}
+                          className={cn(
+                            "flex items-center gap-3 rounded-md border px-4 py-2 cursor-pointer transition",
+                            field.value === emoji && "border-primary bg-muted"
+                          )}
+                        >
+                          <RadioGroupItem value={emoji} />
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">{emoji}</span>
+                            <span className="text-sm text-muted-foreground">
+                              {comment}
+                            </span>
                           </div>
-                        );
-                      })}
+                        </div>
+                      ))}
+
                     </RadioGroup>
                   </FormControl>
                   <FormMessage />
