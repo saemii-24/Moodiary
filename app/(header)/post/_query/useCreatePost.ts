@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 
 export interface CreatePostPayload {
   userId: string;
-  date: string | Date;
+  dateKey: string;
   feeling: string;
   title: string;
   content: string;

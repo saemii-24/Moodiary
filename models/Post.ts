@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-
 const PostSchema = new Schema(
   {
     user: {
@@ -7,11 +6,7 @@ const PostSchema = new Schema(
       ref: "User",
       required: true,
     },
-    date: {
-      type: Date,
-      required: false,
-    },
-    // YYYYMMDD
+    // YYYYMMDD (캘린더 & 하루 식별)
     dateKey: {
       type: Number,
       required: true,
@@ -32,7 +27,6 @@ const PostSchema = new Schema(
       required: true,
       trim: true,
     },
-    //YYYYMMDD로 저장
     createdKey: {
       type: Number,
       required: true,
@@ -46,30 +40,6 @@ const PostSchema = new Schema(
   },
   {
     timestamps: true,
-    toJSON: {
-      transform: (_doc, ret) => {
-        if (ret.updatedAt) {
-          const d = new Date(ret.updatedAt);
-          const yyyy = d.getUTCFullYear();
-          const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
-          const dd = String(d.getUTCDate()).padStart(2, "0");
-          ret.displayDate = `${yyyy}${mm}${dd}`; // YYYYMMDD from updatedAt
-        }
-        return ret;
-      },
-    },
-    toObject: {
-      transform: (_doc, ret) => {
-        if (ret.updatedAt) {
-          const d = new Date(ret.updatedAt);
-          const yyyy = d.getUTCFullYear();
-          const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
-          const dd = String(d.getUTCDate()).padStart(2, "0");
-          ret.displayDate = `${yyyy}${mm}${dd}`;
-        }
-        return ret;
-      },
-    },
   }
 );
 

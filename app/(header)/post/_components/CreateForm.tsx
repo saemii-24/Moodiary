@@ -4,8 +4,6 @@ import { useCreatePost } from "@/app/(header)/post/_query/useCreatePost";
 
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormField,
@@ -17,7 +15,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
-import { MainTitle, TitleTag } from "@/components/common/Title";
+import { TitleTag } from "@/components/common/Title";
 import { cn } from "@/lib/utils";
 
 type FormValues = {
@@ -34,6 +32,14 @@ const EMOJI_OPTIONS = [
   { emoji: "😀", comment: "오늘은 행복한 날이에요." },
 ];
 
+//날짜 포맷팅
+const makeDateKey = (d = new Date()) => {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}${mm}${dd}`;
+};
+
 const CreateForm = () => {
   const userId = "test";
   const form = useForm<FormValues>({
@@ -45,7 +51,7 @@ const CreateForm = () => {
     createPost(
       {
         userId,
-        date: new Date().toISOString(),
+        dateKey: makeDateKey(),
         feeling: values.emoji,
         title: values.title,
         content: values.diary,
@@ -107,7 +113,6 @@ const CreateForm = () => {
                           </div>
                         </div>
                       ))}
-
                     </RadioGroup>
                   </FormControl>
                   <FormMessage />

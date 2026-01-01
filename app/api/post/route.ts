@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongooose";
 import PostModel from "@/models/Post";
 import UserModel from "@/models/User";
+
 export async function POST(request: NextRequest) {
   await connectDB();
 
@@ -12,6 +13,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "필수 값 누락" }, { status: 422 });
   }
 
+  if (!/^\d{8}$/.test(String(dateKey))) {
+    return NextResponse.json({ error: "잘못된 dateKey 형식" }, { status: 422 });
+  }
+
   const user = await UserModel.findOne({ userId });
   if (!user) {
     return NextResponse.json(
@@ -20,18 +25,14 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (!/^\d{8}$/.test(String(dateKey))) {
-    return NextResponse.json({ error: "잘못된 dateKey 형식" }, { status: 422 });
-  }
-
-  const keyNum = Number(dateKey);
-  // dateKey only storage; no Date construction needed
   const newPost = await PostModel.create({
     user: user._id,
-    dateKey: keyNum,
+    dateKey,
     feeling,
     title,
     content,
+    createdKey: dateKey,
+    updatedKey: dateKey,
   });
 
   const populated = await newPost.populate("user");
@@ -43,14 +44,14 @@ export async function GET(request: NextRequest) {
 
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId");
-  const dateKey = searchParams.get("dateKey");
+  const date = searchParams.get("date");
 
-  if (!userId || !dateKey) {
+  if (!userId || !date) {
     return NextResponse.json({ error: "필수 값 누락" }, { status: 422 });
   }
 
-  if (!/^\d{8}$/.test(dateKey)) {
-    return NextResponse.json({ error: "잘못된 dateKey 형식" }, { status: 422 });
+  if (!/^\d{8}$/.test(date)) {
+    return NextResponse.json({ error: "잘못된 date 형식" }, { status: 422 });
   }
 
   const user = await UserModel.findOne({ userId });
@@ -63,7 +64,7 @@ export async function GET(request: NextRequest) {
 
   const post = await PostModel.findOne({
     user: user._id,
-    dateKey: Number(dateKey),
+    date: Number(date),
   }).populate("user");
 
   if (!post) {

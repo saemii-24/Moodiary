@@ -1,9 +1,7 @@
 "use client";
 import FeelingCalendar from "@/components/common/FeelingCalendar";
 import { Subtitle } from "@/components/common/Title";
-import DailyDiary from "./_component/DailyDiary";
 import { useSession } from "next-auth/react";
-import CarouselCard from "@/components/ui/CarouselCard";
 import WeeklyDiary from "./_component/WeeklyDiary";
 import { useRouter } from "next/navigation";
 
@@ -22,7 +20,6 @@ export default function Home() {
       </div>
 
       <div className="mt-4 font-semibold">
-
         <Subtitle>감정 캘린더</Subtitle>
         <FeelingCalendar />
         {/* <DailyDiary /> */}
